@@ -1,6 +1,6 @@
 const mongoose=require("mongoose");
 
-const listingModel=new Schema({
+const listingSchema=new Schema({
     title:String,
     description:String,
     image:String,
@@ -8,3 +8,6 @@ const listingModel=new Schema({
     location:String,
     country:String
 });
+
+const Listing=mongoose.model("Listing",listingSchema);
+module.export=Listing;
