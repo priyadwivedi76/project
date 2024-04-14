@@ -16,16 +16,17 @@ main()
 async function main() {
     await mongoose.connect(mongoose_url);
 }
-
+app.set("views engine","ejs");
+app.set("views",path.join(__dirname,"views"));
 
 app.get("/",(req,res)=>{
     res.send("Welcome to the root");
 });
 
 app.get("/listing",async(req,res)=>{
-     const allListing=await Listing.find({}).then((res)=>{
-        res.render("index.ejs",{allListing});
-    });
+    const allListing=await Listing.find({});
+    console.log("done");
+    res.render("index.ejs",{allListing});
 });
 // app.get("/testListing",async(req,res)=>{
 //     let sampleListing= new Listing({
