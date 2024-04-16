@@ -4,14 +4,14 @@ const mongoose=require("mongoose");
 const Listing=require("./models/listing.js");
 const path=require("path");
 const mongoose_url="mongodb://127.0.0.1:27017/wanderlust";
-
+const methodOverride=require("method-override");
 main()
 .then(()=>{
     console.log("Connection to dbs is secured");
 })
 .catch(err=>{
     console.log(err);
-})
+});
 
 async function main() {
     await mongoose.connect(mongoose_url);
@@ -19,6 +19,8 @@ async function main() {
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
+app.use(methodOverride("_method"));
+
 
 app.get("/",(req,res)=>{
     res.send("Welcome to the root");
@@ -50,6 +52,20 @@ app.post("/listings",async (req,res)=>{
     await newListing.save();
     res.redirect("/listings");
 });
+
+//edit route
+app.get("/listings/:id/edit",async (req,res)=>{
+    let {id}=req.params;
+    const listing=await Listing.findById(id);
+    res.render("listing/edit.ejs",{listing});
+})
+
+//update route
+app.put("/listings/:id",async (req,res)=>{
+    let {id}=req.params;
+    await Listing.findByIdAndUpdate(id,{...req.body.listing});
+    res.redirect(`/listings/${id}`);
+})
 
 app.listen(8080,()=>{
     console.log("Listening to the port 8080");
