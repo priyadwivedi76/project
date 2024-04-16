@@ -3,6 +3,7 @@ const app=express();
 const mongoose=require("mongoose");
 const Listing=require("./models/listing.js");
 const path=require("path");
+const { removeAllListeners } = require("process");
 const mongoose_url="mongodb://127.0.0.1:27017/wanderlust";
 
 main()
@@ -16,7 +17,7 @@ main()
 async function main() {
     await mongoose.connect(mongoose_url);
 }
-app.set("views engine","ejs");
+app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
 
 app.get("/",(req,res)=>{
@@ -25,8 +26,8 @@ app.get("/",(req,res)=>{
 
 app.get("/listing",async(req,res)=>{
     const allListing=await Listing.find({});
-    console.log("done");
-    res.render("index.ejs",{allListing});
+    // console.log("done");
+   res.render("listing/index.ejs",{ allListing });
 });
 // app.get("/testListing",async(req,res)=>{
 //     let sampleListing= new Listing({
