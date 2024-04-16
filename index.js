@@ -25,11 +25,20 @@ app.get("/",(req,res)=>{
 });
 
 //index route
-app.get("/listing",async(req,res)=>{
+app.get("/listings",async(req,res)=>{
     const allListing=await Listing.find({});
     // console.log("done");
    res.render("listing/index.ejs",{ allListing });
 });
+
+
+//show route
+app.get("/listings/:id",async(req,res)=>{
+    let {id}=req.params;
+    const listing=await Listing.findById(id);
+    res.render("listing/show.ejs",{listing});
+});
+
 // app.get("/testListing",async(req,res)=>{
 //     let sampleListing= new Listing({
 //         title:"My Villa",
