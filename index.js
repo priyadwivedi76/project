@@ -3,7 +3,6 @@ const app=express();
 const mongoose=require("mongoose");
 const Listing=require("./models/listing.js");
 const path=require("path");
-const { removeAllListeners } = require("process");
 const mongoose_url="mongodb://127.0.0.1:27017/wanderlust";
 
 main()
@@ -17,6 +16,7 @@ main()
 async function main() {
     await mongoose.connect(mongoose_url);
 }
+app.use(express.urlencoded({ extended: true }));
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
 
@@ -25,12 +25,16 @@ app.get("/",(req,res)=>{
 });
 
 //index route
-app.get("/listings",async(req,res)=>{
+app.get("/listings",async (req,res)=>{
     const allListing=await Listing.find({});
     // console.log("done");
    res.render("listing/index.ejs",{ allListing });
 });
 
+//new route
+app.get("/listings/new",(req,res)=>{
+    res.render("listing/new.ejs");
+})
 
 //show route
 app.get("/listings/:id",async(req,res)=>{
@@ -39,24 +43,17 @@ app.get("/listings/:id",async(req,res)=>{
     res.render("listing/show.ejs",{listing});
 });
 
-// app.get("/testListing",async(req,res)=>{
-//     let sampleListing= new Listing({
-//         title:"My Villa",
-//         description:"New,Affordable and Semi Furnished",
-//         price:12000,
-//         location:"Goa",
-//         country:"India"
-//     });
-
-//     await sampleListing.save();
-//     console.log("Sample was saved");
-//     res.send("Successful");
-// })
-
+//create route
+app.post("/listings",async (req,res)=>{
+    // let {title,description,image,price,location,country}=req.body;
+    const newListing=new Listing(req.body.listing);
+    await newListing.save();
+    res.redirect("/listings");
+});
 
 app.listen(8080,()=>{
     console.log("Listening to the port 8080");
-})
+});
 
 
 
