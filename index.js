@@ -24,6 +24,7 @@ app.get("/",(req,res)=>{
     res.send("Welcome to the root");
 });
 
+//index route
 app.get("/listing",async(req,res)=>{
     const allListing=await Listing.find({});
     // console.log("done");
