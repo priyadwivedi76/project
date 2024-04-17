@@ -46,3 +46,19 @@ background-color: white;
     flex-wrap: wrap;
     background-color: #f4eeee57;
 }
+
+/* //cards */
+.card{
+    border:none !important;
+    margin-bottom: 2rem !important;
+}
+
+.card-img-top{
+    border-radius: 1.5rem !important;
+    width:100% !important;
+    object-fit: cover !important;
+}
+
+.card-body{
+    padding: 0 !important;
+}
