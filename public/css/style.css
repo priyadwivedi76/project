@@ -71,3 +71,11 @@ background-color: white;
 .card-text p{
     font-weight: 400 !important;
 }
+
+.listings-link{
+    text-decoration: none;
+}
+/* Card overlay effect */
+.card-img-overlay{
+    
+}
