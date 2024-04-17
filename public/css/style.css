@@ -1,6 +1,19 @@
 /* body */
 body{
     font-family:"Plus Jakarta Sans", sans-serif !important;
+    display:flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* boilerplate-container */
+.container{
+    flex:1;
+}
+
+.add-btn{
+    background-color:  rgb(220, 25, 25) !important;
+    border: none !important;
 }
 
 /* Navbar */
