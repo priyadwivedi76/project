@@ -6,6 +6,7 @@ body{
     min-height: 100vh;
 }
 
+
 /* boilerplate-container */
 .container{
     flex:1;
@@ -15,6 +16,15 @@ body{
     background-color:  rgb(220, 25, 25) !important;
     border: none !important;
 }
+
+
+
+/* edit page */
+.edit-btn{
+    background-color:  rgb(220, 25, 25) !important;
+    border: none !important;
+}
+
 
 /* Navbar */
 .navbar{
@@ -31,8 +41,9 @@ background-color: white;
     color: #222222 !important; 
 }
 
-/* Footer */
 
+
+/* Footer */
 .links a{
     padding: 10px;
     text-decoration: none;
@@ -40,7 +51,6 @@ background-color: white;
 }
 .links a:hover{
     text-decoration: underline;
-    /* font-size: 1.2rem; */
 }
 .socials, .links,.brands{
     width: 100%;
@@ -55,7 +65,6 @@ background-color: white;
 }
 
 .f-info{
-    /* padding: 10px; */
     text-align: center;
     height: 8rem;
     display: flex;
@@ -65,7 +74,8 @@ background-color: white;
     background-color: #f4eeee57;
 }
 
-/* //cards */
+
+/* cards */
 .card{
     border:none !important;
     margin-bottom: 2rem !important;
@@ -90,6 +100,7 @@ background-color: white;
 }
 
 
+
 /* Card overlay effect */
 .card-img-overlay{
     opacity:0;
@@ -98,4 +109,14 @@ background-color: white;
 .card-img-overlay:hover{
     opacity:0.2;
     background-color: white;
+}
+
+/* show page */
+
+.show-img{
+    height: 30vh;
+}
+
+.btns{
+    display: flex;
 }
