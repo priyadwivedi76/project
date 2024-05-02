@@ -9,6 +9,7 @@ const ejsMate=require("ejs-mate");
 const wrapAsync=require("./utils/wrapAsync.js");
 const ExpressError=require("./utils/expressError.js");
 const { wrap } = require("module");
+const {listingSchema}=require("./schema.js");
 
 //connect db
 main()
@@ -36,6 +37,17 @@ app.get("/",(req,res)=>{
     res.send("Welcome to the root");
 });
 
+//validation
+const  validateListing=(req,res,next)=>{
+    let {error}=listingSchema.validate(req.body);
+    if(error){
+        let errMsg=error.details.map((el)=>el.message).join(",");
+        new ExpressError(404,errMsg);
+    }else{
+        next();
+    };
+};
+
 //index route
 app.get("/listings",wrapAsync(async (req,res)=>{
     const allListing=await Listing.find({});
@@ -56,28 +68,27 @@ app.get("/listings/:id",wrapAsync(async(req,res)=>{
 }));
 
 //create route
-app.post("/listings",wrapAsync(async(req,res,next)=>{
-    if(!req.body.listing){
-        new ExpressError(400,"Send Valid data");
-    }
-        const newListing=new Listing(req.body.listing);
-        await newListing.save();
-        res.redirect("/listings");
+app.post("/listings",
+validateListing,
+wrapAsync(async(req,res,next)=>{
+    const newListing=new Listing(req.body.listing);
+    await newListing.save();
+    res.redirect("/listings");
 })
 );
 
 //edit route
-app.get("/listings/:id/edit",wrapAsync(async (req,res)=>{
+app.get("/listings/:id/edit",
+wrapAsync(async (req,res)=>{
     let {id}=req.params;
     const listing=await Listing.findById(id);
     res.render("listing/edit.ejs",{listing});
 }));
 
 //update route
-app.put("/listings/:id",wrapAsync(async (req,res)=>{
-    if(!req.body.listing){
-        new ExpressError(400,"Send Valid data");
-    }
+app.put("/listings/:id",
+validateListing,
+wrapAsync(async (req,res)=>{
     let {id}=req.params;
     await Listing.findByIdAndUpdate(id,{...req.body.listing});
     res.redirect(`/listings/${id}`);
@@ -95,12 +106,12 @@ app.delete("/listings/:id",wrapAsync(async(req,res)=>{
 //error handler
 app.use("*",(req,res,next)=>{
     next(new ExpressError(404,"Page Not Found!"));
-})
+});
 
 app.use((err,req,res,next)=>{
    let {status=500,message="Something went wrong!"}=err;
   res.status(status).render("error.ejs",{message});
-})
+});
 
 app.listen(8080,()=>{
     console.log("Listening to the port 8080");
